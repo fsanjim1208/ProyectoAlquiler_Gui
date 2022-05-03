@@ -1,6 +1,6 @@
 package entidades;
 
-public class Oficina {
+public class Oficina implements Comparable <Oficina>{
 
 	private String Codigo;
 	private String Descripcion;
@@ -91,4 +91,33 @@ public class Oficina {
 		return Descripcion+" con codigo "+Codigo;
 	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		Oficina guest = (Oficina) obj;
+	
+		return 	(this.Codigo.equals(guest.Codigo));
+	}
+	
+
+	@Override
+	public int compareTo(Oficina o) {
+		int resultado=0;
+		
+		if ( this.getCodigo().compareTo(o.getCodigo())<0 )
+		{
+			resultado=-1;
+		}
+		else if (this.getCodigo().compareTo(o.getCodigo())>0 ) 
+		{
+			resultado = 1;
+		}
+		else
+		{
+			resultado = 0;
+		}
+		
+		return resultado;
+	}
+	
 }

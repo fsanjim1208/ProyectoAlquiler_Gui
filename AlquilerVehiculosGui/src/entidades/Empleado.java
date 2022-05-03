@@ -14,6 +14,13 @@ public class Empleado extends Persona{
 
 		
 	    //CONSTRUCTORES
+		
+		public Empleado(String nombre, String ape1, String ape2, String dni, Oficina oficinaEmpleado) throws LongitudInvalidaException {
+	
+			super(nombre, ape1, ape2,dni);
+			setOficinaEmpleado(oficinaEmpleado);
+		}
+		
 		/**
 		 * Constructor para el objeto Empleado
 		 * @param nombre String nombre de cada empleado
@@ -24,6 +31,8 @@ public class Empleado extends Persona{
 		public Empleado(String nombre, String ape1, String dni) throws LongitudInvalidaException {
 			super(nombre, ape1, dni);
 			// TODO Auto-generated constructor stub
+			
+			
 		}
 		
 		/**
@@ -39,6 +48,9 @@ public class Empleado extends Persona{
 		public Empleado(String nombre, String ape1, String ape2, String dni,GregorianCalendar fechaAltEmpleado, Oficina OficinaEmpleado) throws LongitudInvalidaException {
 			super(nombre, ape1, ape2, dni);
 			// TODO Auto-generated constructor stub
+			setOficinaEmpleado(OficinaEmpleado);
+			setFechaAltEmpleado(fechaAltEmpleado);
+			
 		}
 
 		

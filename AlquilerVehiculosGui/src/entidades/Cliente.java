@@ -31,6 +31,11 @@ public class Cliente extends Persona{
 		super(nombre, ape1, dni);
 		
 	}
+	
+	public Cliente(String nombre, String ape1,String ape2, String dni) throws LongitudInvalidaException {
+		super(nombre, ape1,ape2, dni);
+		// TODO Auto-generated constructor stub
+	}
 
 	public CarnetConducir getTipoCarnet() 
 	{

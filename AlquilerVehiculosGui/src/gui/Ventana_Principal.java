@@ -21,6 +21,11 @@ import javax.swing.border.EmptyBorder;
 public class Ventana_Principal extends JFrame {
 
 	private JPanel contentPane;
+	
+
+	
+
+	
 
 
 
@@ -29,7 +34,7 @@ public class Ventana_Principal extends JFrame {
 	 */
 	public Ventana_Principal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 1024, 768);
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Segoe UI", Font.PLAIN, 15));
@@ -38,33 +43,24 @@ public class Ventana_Principal extends JFrame {
 		JMenu mnNewMenu = new JMenu("Ficheros maestros");
 		menuBar.add(mnNewMenu);
 		
-		JMenu mnNewMenu_2 = new JMenu("Oficinas");
+		JMenuItem mnNewMenu_2 = new JMenuItem("Oficinas");
 		mnNewMenu.add(mnNewMenu_2);
-		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Crear Oficina");
-		mntmNewMenuItem_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		mnNewMenu_2.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				Formulario_Oficina v;
 				v = new Formulario_Oficina();				
 				Metodos_Gui.CentraVentana(v);
 				v.setVisible(true);
-
-				
 			}
 		});
-		mnNewMenu_2.add(mntmNewMenuItem_1);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Modificar Oficina");
-		mnNewMenu_2.add(mntmNewMenuItem_2);
+
 		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Eliminar Oficina");
-		mnNewMenu_2.add(mntmNewMenuItem_3);
-		
-		JMenu mnNewMenu_3 = new JMenu("Empleados");
+		JMenuItem mnNewMenu_3 = new JMenuItem("Empleados");
 		mnNewMenu.add(mnNewMenu_3);
-		
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Crear Empleado");
-		mntmNewMenuItem_4.addActionListener(new ActionListener() {
+		mnNewMenu_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Formulario_Empleado v;
 				try {
@@ -78,14 +74,7 @@ public class Ventana_Principal extends JFrame {
 
 			}
 		});
-		mnNewMenu_3.add(mntmNewMenuItem_4);
-		
-		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Modificar Empleado");
-		mnNewMenu_3.add(mntmNewMenuItem_5);
-		
-		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Eliminar Empleado");
-		mnNewMenu_3.add(mntmNewMenuItem_6);
-		
+	
 		JMenu mnNewMenu_1 = new JMenu("Procesos Diarios");
 		menuBar.add(mnNewMenu_1);
 		

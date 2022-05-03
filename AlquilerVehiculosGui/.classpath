@@ -7,5 +7,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/ferku/Downloads/ojdbc8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ferku/git/ProyectoAlquiler_Gui/AlquilerVehiculosGui/jcalendar-1.4/lib/jgoodies-common-1.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ferku/git/ProyectoAlquiler_Gui/AlquilerVehiculosGui/jcalendar-1.4/lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -6,8 +6,10 @@ import java.sql.SQLException;
 
 
 public class AccesoADatos {
+	
+	public static Connection dbconexion;
 
-	public static Connection AbreConexion()
+	public static void AbreConexion()
 	{
 		Connection conexion = null;
 		try 
@@ -20,7 +22,7 @@ public class AccesoADatos {
 			e.printStackTrace();
 		}
 		
-		return conexion;
+		dbconexion= conexion;
 	}
 	
 
