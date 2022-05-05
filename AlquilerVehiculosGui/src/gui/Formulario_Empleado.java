@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import accesoadatos.AccesoADatos;
+import accesoadatos.RepositorioEmpleados;
 import accesoadatos.RepositorioOficina;
 import entidades.Oficina;
 import excepciones.LongitudInvalidaException;
@@ -26,6 +27,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JCalendar;
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Formulario_Empleado extends JFrame {
 
@@ -94,6 +97,38 @@ public class Formulario_Empleado extends JFrame {
 		cbOficinas.setSelectedIndex(0);
 		
 		textDni = new JTextField();
+		textDni.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				if(e.getKeyCode()==KeyEvent.VK_ENTER)
+				{
+					try {
+						if(RepositorioEmpleados.leeEmpleados(textDni.getText())!=null)
+						{
+							textNombre.setText(RepositorioEmpleados.leeEmpleados(textDni.getText()).getNombre());
+							textApe1.setText(RepositorioEmpleados.leeEmpleados(textDni.getText()).getApe1());
+							textApe2.setText(RepositorioEmpleados.leeEmpleados(textDni.getText()).getApe2());
+							
+							GregorianCalendar fecha=RepositorioEmpleados.leeEmpleados(textDni.getText()).getFechaAltEmpleado();
+							String fechaalt= fecha.getTime().getDate()+"/"+(fecha.getTime().getMonth()+1)+"/"+(fecha.getTime().getYear()+1900);
+							TextFieldFechaAlta.setText(fechaalt);
+							lblFecha.setText(fechaalt);
+							
+							cbOficinas.setSelectedItem((Oficina)RepositorioEmpleados.leeEmpleados(textDni.getText()).getOficinaEmpleado());
+							
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (LongitudInvalidaException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				
+			}
+		});
 		textDni.setBounds(119, 23, 84, 19);
 		contentPane.add(textDni);
 		textDni.setColumns(10);
@@ -157,9 +192,9 @@ public class Formulario_Empleado extends JFrame {
 					try 
 					{
 						buscador = new BuscaEmpleados();
-						buscador.setVisible(true);
 						Metodos_Gui.CentraVentana(buscador);
-						
+						buscador.setVisible(true);
+												
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

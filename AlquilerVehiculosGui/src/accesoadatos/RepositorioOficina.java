@@ -76,7 +76,7 @@ public class RepositorioOficina {
 		ResultSet rs;
 		String query;
 		
-		query = "Insert * insert into oficina (codigo,descripcion,oficinaaeropuerto,recargosiaeropuerto, nombreloc,nombreprov) values ('?','?','?',10,'?','?');";
+		query = "Insert into oficina (codigo,descripcion,oficinaaeropuerto,recargosiaeropuerto, nombreloc,nombreprov) values (?,?,?,10,?,?)";
 		St = AccesoADatos.dbconexion.prepareStatement(query); 
 		St.setString(1,codigo);
 		St.setString(2,descripcion);
@@ -84,7 +84,7 @@ public class RepositorioOficina {
 		St.setString(4,nombreloc);
 		St.setString(5,nombreprov);
 		
-		rs = St.executeQuery(query);
+		rs = St.executeQuery();
 	}
 	
 	public static void añadeOficina(Oficina o) throws SQLException

@@ -73,6 +73,6 @@ public class Empleado extends Persona{
 		
 		@Override
 		public String toString() {
-			return "Empleado "+ InformacionCompleta();
+			return InformacionCompleta();
 		}
 }

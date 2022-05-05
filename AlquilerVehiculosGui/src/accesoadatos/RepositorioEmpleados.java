@@ -65,10 +65,10 @@ public class RepositorioEmpleados {
 		ResultSet rs;
 		String query;
 		
-		query = "SELECT pe.*, em.* FROM empleados em JOIN personas pe ON em.dni=pe.dni";
+		query = "SELECT pe.*,em.* FROM empleados em JOIN personas pe ON em.dni=pe.dni where pe.dni=?";
 		St = AccesoADatos.dbconexion.prepareStatement(query); 
 		St.setString(1,dni);
-		rs = St.executeQuery(query);
+		rs = St.executeQuery();
 				
 		Empleado empleado = null;
 
@@ -76,14 +76,16 @@ public class RepositorioEmpleados {
 		while (rs.next()) 
 		{
 			String nombre=rs.getString("nombre");
-			String ape1=rs.getString("ape1");
-			String ape2=rs.getString("ape2");
+			String ape1=rs.getString("ap1");
+			String ape2=rs.getString("ap2");
 			String codigoOficina=rs.getString("cod_ofi");
 			
 			Oficina oficinaEmpleado=RepositorioOficina.BuscaOficina(codigoOficina);
 			
 			Date fecha=rs.getDate("fechaalta");
-			GregorianCalendar FechaAlta=new GregorianCalendar(fecha.getDate(), fecha.getMonth(), fecha.getYear());
+			
+			GregorianCalendar FechaAlta=new GregorianCalendar((fecha.getYear()+1900), fecha.getMonth(), fecha.getDate());
+			
 			empleado = new Empleado(nombre,ape1, ape2, dni,FechaAlta,oficinaEmpleado);
 		}
 
@@ -155,14 +157,14 @@ public class RepositorioEmpleados {
 		ResultSet rs;
 		String query;
 		
-		query = "DELETE FROM cliente where dni = ? ;";
+		query = "DELETE FROM cliente where dni = ?";
 		St = AccesoADatos.dbconexion.prepareStatement(query); 
 		St.setString(1,dni);
 
 		rs = St.executeQuery(query);
 		rs=null;
 		
-		query = "DELETE FROM personas where dni = ? ;";
+		query = "DELETE FROM personas where dni = ?";
 		St = AccesoADatos.dbconexion.prepareStatement(query); 
 		St.setString(1,dni);
 

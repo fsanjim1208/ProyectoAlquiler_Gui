@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import excepciones.LongitudInvalidaException;
+
 public class Ventana_Principal extends JFrame {
 
 	private JPanel contentPane;
@@ -50,9 +52,24 @@ public class Ventana_Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) 
 			{
 				Formulario_Oficina v;
-				v = new Formulario_Oficina();				
-				Metodos_Gui.CentraVentana(v);
-				v.setVisible(true);
+				try 
+				{
+					try {
+						v = new Formulario_Oficina();
+						Metodos_Gui.CentraVentana(v);
+						v.setVisible(true);
+					} catch (LongitudInvalidaException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				} 
+				catch (SQLException e1) 
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+
 			}
 		});
 		
