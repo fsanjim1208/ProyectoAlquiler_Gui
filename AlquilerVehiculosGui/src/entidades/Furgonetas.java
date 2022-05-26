@@ -12,6 +12,8 @@ public class Furgonetas extends Combustion{
 	private CarnetConducir CarnetRequerido;
 	int preciobase =70;
 	
+
+
 	//Constructores
 	/**
 	 * 
@@ -28,9 +30,9 @@ public class Furgonetas extends Combustion{
 	 * @param carnetrequerido TipoCarnet carnet requerido para conducir la furgoneta
 	 */
 	public Furgonetas(String matricula, String marca, String modelo, String color, int km,
-			GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria, String nivelemisiones,
-			int capacidadcarga, CarnetConducir carnetrequerido) {
-		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria, nivelemisiones);
+					  GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria, boolean alquilado,
+					  String consumo,int potencia,String nivelemisiones,int capacidadcarga, CarnetConducir carnetrequerido) {
+		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria,alquilado, consumo,potencia,nivelemisiones);
 		this.setCapacidadCarga(capacidadcarga);
 		this.setCarnetRequerido(carnetrequerido);
 	}
@@ -49,6 +51,14 @@ public class Furgonetas extends Combustion{
 		CarnetRequerido = carnetRequerido;
 	}
 
+	public int getPreciobase() {
+		return preciobase;
+	}
+
+	public void setPreciobase(int preciobase) {
+		this.preciobase = preciobase;
+	}
+	
 	@Override
 	public double CalculaPrecio(int DiasAlquilado) {
 		double precio=preciobase+((preciobase*getCategoria().getRecargo())/100);

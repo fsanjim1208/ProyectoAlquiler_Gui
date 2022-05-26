@@ -2,7 +2,11 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.HeadlessException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -12,8 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import accesoadatos.AccesoADatos;
+import accesoadatos.RepositorioAlquileres;
 import accesoadatos.RepositorioEmpleados;
 import accesoadatos.RepositorioOficina;
+import entidades.Alquiler;
+import entidades.Empleado;
 import entidades.Oficina;
 import excepciones.LongitudInvalidaException;
 
@@ -29,6 +36,7 @@ import com.toedter.calendar.JCalendar;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
 
 public class Formulario_Empleado extends JFrame {
 
@@ -43,6 +51,7 @@ public class Formulario_Empleado extends JFrame {
 	private JButton btnSeleccionar;
 	private JPanel panelFecha;
 	private JLabel lblFecha;
+	private JButton btnBorrar;
 
 
 
@@ -51,6 +60,7 @@ public class Formulario_Empleado extends JFrame {
 	 * @throws SQLException 
 	 */
 	public Formulario_Empleado() throws SQLException {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 622, 356);
 		contentPane = new JPanel();
@@ -104,20 +114,23 @@ public class Formulario_Empleado extends JFrame {
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					try {
-						if(RepositorioEmpleados.leeEmpleados(textDni.getText())!=null)
-						{
-							textNombre.setText(RepositorioEmpleados.leeEmpleados(textDni.getText()).getNombre());
-							textApe1.setText(RepositorioEmpleados.leeEmpleados(textDni.getText()).getApe1());
-							textApe2.setText(RepositorioEmpleados.leeEmpleados(textDni.getText()).getApe2());
+//						if(RepositorioEmpleados.leeEmpleados(textDni.getText())!=null)
+//						{
+							textNombre.setText(RepositorioEmpleados.BuscaEmpleados(textDni.getText()).getNombre());
+							textDni.setEnabled(false);
+							textApe1.setText(RepositorioEmpleados.BuscaEmpleados(textDni.getText()).getApe1());
+							textApe2.setText(RepositorioEmpleados.BuscaEmpleados(textDni.getText()).getApe2());
 							
-							GregorianCalendar fecha=RepositorioEmpleados.leeEmpleados(textDni.getText()).getFechaAltEmpleado();
+							GregorianCalendar fecha=RepositorioEmpleados.BuscaEmpleados(textDni.getText()).getFechaAltEmpleado();
 							String fechaalt= fecha.getTime().getDate()+"/"+(fecha.getTime().getMonth()+1)+"/"+(fecha.getTime().getYear()+1900);
 							TextFieldFechaAlta.setText(fechaalt);
 							lblFecha.setText(fechaalt);
 							
-							cbOficinas.setSelectedItem((Oficina)RepositorioEmpleados.leeEmpleados(textDni.getText()).getOficinaEmpleado());
+							cbOficinas.setSelectedItem((Oficina)RepositorioEmpleados.BuscaEmpleados(textDni.getText()).getOficinaEmpleado());
 							
-						}
+							btnBorrar.setVisible(true);
+							
+//						}
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -144,22 +157,78 @@ public class Formulario_Empleado extends JFrame {
 		textApe1.setColumns(10);
 		
 		JButton btnGrabar = new JButton("Grabar");
+		btnGrabar.setIcon(new ImageIcon(Formulario_Empleado.class.getResource("/imagenes/diskette.png")));
 		btnGrabar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Oficina oficina= (Oficina) cbOficinas.getSelectedItem();
-				String codigoOficina=oficina.getCodigo();
-				
-				try 
-				{
-					accesoadatos.RepositorioEmpleados.añadeEmpleado(textNombre.getText(),textApe1.getText(),textApe2.getText(),
-																	textDni.getText(),lblFecha.getText(),codigoOficina);
-				} 
-				catch (SQLException e1) {
+				try {
+					if (RepositorioEmpleados.BuscaEmpleados(textDni.getText())==null)
+					{
+						Oficina oficina= (Oficina) cbOficinas.getSelectedItem();
+						String codigoOficina=oficina.getCodigo();
+						
+						try 
+						{
+						
+							accesoadatos.RepositorioEmpleados.añadeEmpleado(textNombre.getText(),textApe1.getText(),textApe2.getText(),
+																			textDni.getText(),lblFecha.getText(),codigoOficina);
+						} 
+						catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "No se ha podido grabar al empleado");
+						}
+					}
+					else if (RepositorioEmpleados.BuscaEmpleados(textDni.getText())!=null && 
+							 RepositorioAlquileres.BuscaAlquileresDeEmpleado(textDni.getText())!=null)
+					{
+
+						Alquiler alquiler=RepositorioAlquileres.BuscaAlquileresDeEmpleado(textDni.getText());
+						
+						Empleado empleadoviejo = alquiler.getEmpleado();
+						
+						Oficina oficina= (Oficina) cbOficinas.getSelectedItem();
+						String codigoOficina=oficina.getCodigo();
+						
+						
+						GregorianCalendar fecha=(GregorianCalendar) Calendar.getInstance();
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+						fecha.setTime(sdf.parse(TextFieldFechaAlta.getText()));
+						
+						Empleado empleadonuevo=new Empleado(textNombre.getText(),textApe1.getText(),textApe2.getText(),
+								textDni.getText(),fecha,oficina);
+						
+						RepositorioEmpleados.modificaEmpleado(empleadoviejo, empleadonuevo);
+					
+					}
+					else if (RepositorioEmpleados.BuscaEmpleados(textDni.getText())!=null && 
+							 RepositorioAlquileres.BuscaAlquileresDeEmpleado(textDni.getText())==null)
+					{
+						Empleado empleviejo= buscador.getEmpleado();
+						
+						RepositorioEmpleados.eliminaEmpleado(empleviejo);
+						
+						Oficina oficina= (Oficina) cbOficinas.getSelectedItem();
+						String codigoOficina=oficina.getCodigo();
+						
+						GregorianCalendar fecha=(GregorianCalendar) Calendar.getInstance();
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+						fecha.setTime(sdf.parse(TextFieldFechaAlta.getText()));
+						Empleado empleadonuevo=new Empleado(textNombre.getText(),textApe1.getText(),textApe2.getText(),
+								textDni.getText(),fecha,oficina);
+						
+						RepositorioEmpleados.añadeEmpleado(empleadonuevo);
+					}
+					else 
+					{
+						
+					}
+
+				} catch (SQLException | LongitudInvalidaException | ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+				//Limpiar formulario
 				textDni.setText("");
 				textNombre.setText("");
 				textApe1.setText("");
@@ -170,20 +239,22 @@ public class Formulario_Empleado extends JFrame {
 			}
 		});
 
-		btnGrabar.setBounds(323, 288, 85, 21);
+		btnGrabar.setBounds(285, 288, 96, 21);
 		contentPane.add(btnGrabar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setIcon(new ImageIcon(Formulario_Empleado.class.getResource("/imagenes/close.png")));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				
 			}
 		});
-		btnCancelar.setBounds(513, 288, 85, 21);
+		btnCancelar.setBounds(486, 288, 112, 21);
 		contentPane.add(btnCancelar);
 		
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.setIcon(new ImageIcon(Formulario_Empleado.class.getResource("/imagenes/zoom.png")));
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -204,6 +275,7 @@ public class Formulario_Empleado extends JFrame {
 					}
 					
 					textDni.setText(buscador.getEmpleado().getDni());
+					textDni.setEnabled(false);
 					textNombre.setText(buscador.getEmpleado().getNombre());
 					textApe1.setText(buscador.getEmpleado().getApe1());
 					textApe2.setText(buscador.getEmpleado().getApe2());
@@ -212,6 +284,7 @@ public class Formulario_Empleado extends JFrame {
 					String fechaalt= fecha.getTime().getDate()+"/"+(fecha.getTime().getMonth()+1)+"/"+(fecha.getTime().getYear()+1900);
 					TextFieldFechaAlta.setText(fechaalt);
 					lblFecha.setText(fechaalt);
+					btnBorrar.setVisible(true);
 				}
 				else
 				{
@@ -219,13 +292,13 @@ public class Formulario_Empleado extends JFrame {
 				}
 			}
 		});
-		btnBuscar.setBounds(213, 22, 85, 21);
+		btnBuscar.setBounds(213, 22, 107, 21);
 		contentPane.add(btnBuscar);
 		
 		JCalendar calendar = new JCalendar();
 		calendar.setBounds(355, 23, 214, 157);
 		contentPane.add(calendar);
-		calendar.setVisible(false);
+		calendar.setVisible(true);
 		
 		JButton btnNewButton = new JButton("Abrir Calendario");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -236,20 +309,24 @@ public class Formulario_Empleado extends JFrame {
 		});
 		btnNewButton.setBounds(213, 184, 126, 21);
 		contentPane.add(btnNewButton);
+		btnNewButton.setVisible(false);
 		
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				
 				textDni.setText("");
+				textDni.setEnabled(true);
 				textNombre.setText("");
 				textApe1.setText("");
 				textApe2.setText("");
 				cbOficinas.setSelectedIndex(0);
 				lblFecha.setText("");
+				btnBorrar.setVisible(false);
 			}
 		});
-		btnLimpiar.setBounds(418, 288, 85, 21);
+		btnLimpiar.setBounds(391, 288, 85, 21);
 		contentPane.add(btnLimpiar);
 		
 		TextFieldFechaAlta = new JTextField();
@@ -260,6 +337,7 @@ public class Formulario_Empleado extends JFrame {
 		TextFieldFechaAlta.setVisible(false);
 		
 		btnSeleccionar = new JButton("Seleccionar");
+		btnSeleccionar.setIcon(new ImageIcon(Formulario_Empleado.class.getResource("/imagenes/add.png")));
 		btnSeleccionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -272,8 +350,8 @@ public class Formulario_Empleado extends JFrame {
 				lblFecha.setText(dia);
 			}
 		});
-		btnSeleccionar.setBounds(407, 184, 107, 21);
-		btnSeleccionar.setVisible(false);
+		btnSeleccionar.setBounds(391, 184, 141, 21);
+		btnSeleccionar.setVisible(true);
 		contentPane.add(btnSeleccionar);
 		
 		panelFecha = new JPanel();
@@ -286,6 +364,32 @@ public class Formulario_Empleado extends JFrame {
 		lblFecha.setBounds(5, 0, 62, 19);
 		panelFecha.add(lblFecha);
 		
+		btnBorrar = new JButton("Borrar");
+		btnBorrar.setIcon(new ImageIcon(Formulario_Empleado.class.getResource("/imagenes/recycle_bin.png")));
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try 
+				{
+					RepositorioEmpleados.EliminaEmpleado(textDni.getText());
+				} catch (SQLException | LongitudInvalidaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				textDni.setText("");
+				textNombre.setText("");
+				textApe1.setText("");
+				textApe2.setText("");
+				cbOficinas.setSelectedIndex(0);
+				lblFecha.setText("");
+				btnBorrar.setVisible(false);
+				
+			}
+		});
+		btnBorrar.setBounds(176, 288, 99, 21);
+		contentPane.add(btnBorrar);
+		btnBorrar.setVisible(false);
 		
 	
 	}

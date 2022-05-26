@@ -88,7 +88,14 @@ public class Oficina implements Comparable <Oficina>{
 
 	@Override
 	public String toString() {
-		return Descripcion+" con codigo "+Codigo;
+	
+		String aeropuerto="";
+		if (OficinaAeropuerto==true)
+		{
+			aeropuerto="AEROPUERTO";
+		}
+		//return Descripcion+" con codigo "+Codigo;
+		return aeropuerto+" "+Localidad +" - "+ Codigo;
 	}
 
 	@Override

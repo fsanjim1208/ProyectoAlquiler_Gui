@@ -28,14 +28,27 @@ public class CochesCombustion extends Combustion{
 	 * @param tipo String el tipo de coche
 	 */
 	public CochesCombustion(String matricula, String marca, String modelo, String color, int km,
-			GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria,
-			String nivelemisiones,	int numeroplazas, String tipo) 
+			GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria,boolean alquilado,
+			int potencia,String consumo,String nivelemisiones,	int numeroplazas, String tipo) 
 	{
-		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria, nivelemisiones);
+		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria,alquilado, nivelemisiones,potencia, consumo);
 		this.setNplazas(numeroplazas);
 		this.setTipo(tipo);
 	}
+	public CochesCombustion(String matricula, String marca, String modelo, String color, int km,
+			GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria,boolean alquilado,
+			int potencia,String consumo,String nivelemisiones) 
+	{
+		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria,alquilado, nivelemisiones,potencia, consumo);
 
+	}
+
+	public CochesCombustion(CochesCombustion cc) 
+	{
+		super(cc.getMatricula(), cc.getMarca(), cc.getModelo(), cc.getColor(), cc.getKm(), cc.getFechaadquisicion(), cc.getOficina(), cc.getCategoria(), cc.isAlquilado(),cc.getNivelEmisiones(),cc.getPotencia(), cc.getConsumo());
+		this.setNplazas(cc.getNplazas());
+		this.setTipo(cc.getTipo());
+	}
 
 
 	///Getters and Setters
@@ -56,6 +69,12 @@ public class CochesCombustion extends Combustion{
 		this.tipo = tipo;
 	}
 
+	public int getPreciobase() {
+		return preciobase;
+	}
+	public void setPreciobase(int preciobase) {
+		this.preciobase = preciobase;
+	}
 
 
 	@Override

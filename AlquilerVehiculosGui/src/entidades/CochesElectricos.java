@@ -11,6 +11,8 @@ public class CochesElectricos extends Electrico{
 	
 	//Constructor
 	
+
+
 	/**
 	 * 
 	 * Cosntructor del objeto coche electrico
@@ -28,9 +30,9 @@ public class CochesElectricos extends Electrico{
 	 * @param tipo tipo de vehiculo que es el coche
 	 */
 	public CochesElectricos(String matricula, String marca, String modelo, String color, int km,
-			GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria, int autonomia,
-			int tiemporecarga,int numeroplazas, String tipo) {
-		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria, autonomia, tiemporecarga);
+							GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria, boolean alquilado,
+							int autonomia,int tiemporecarga,int numeroplazas, String tipo) {
+		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria,alquilado, autonomia, tiemporecarga);
 		this.setNplazas(numeroplazas);
 		this.setTipo(tipo);
 	}
@@ -55,6 +57,14 @@ public class CochesElectricos extends Electrico{
 	private void setTipo(String tipo) 
 	{
 		this.tipo = tipo;
+	}
+	
+	public int getPreciobase() {
+		return preciobase;
+	}
+
+	public void setPreciobase(int preciobase) {
+		this.preciobase = preciobase;
 	}
 
 	@Override

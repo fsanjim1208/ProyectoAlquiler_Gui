@@ -18,6 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import accesoadatos.RepositorioAlquileres;
+import accesoadatos.RepositorioOficina;
+import accesoadatos.RepositorioVehiculos;
 import excepciones.LongitudInvalidaException;
 
 public class Ventana_Principal extends JFrame {
@@ -43,11 +46,52 @@ public class Ventana_Principal extends JFrame {
 		setJMenuBar(menuBar);
 		
 		JMenu mnNewMenu = new JMenu("Ficheros maestros");
+		mnNewMenu.setIcon(new ImageIcon(Ventana_Principal.class.getResource("/imagenes/gear.png")));
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mnNewMenu_2 = new JMenuItem("Oficinas");
-		mnNewMenu.add(mnNewMenu_2);
-		mnNewMenu_2.addActionListener(new ActionListener() 
+		
+		JMenuItem MenuEmpleados = new JMenuItem("Empleados");
+		MenuEmpleados.setIcon(new ImageIcon(Ventana_Principal.class.getResource("/imagenes/administrator.png")));
+		mnNewMenu.add(MenuEmpleados);
+		
+
+		MenuEmpleados.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Formulario_Empleado v;
+				try {
+					v = new Formulario_Empleado();
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+
+			}
+		});
+		
+		JMenuItem MenuClientes = new JMenuItem("Clientes");
+		MenuClientes.setIcon(new ImageIcon(Ventana_Principal.class.getResource("/imagenes/clients.png")));
+		mnNewMenu.add(MenuClientes);
+		MenuClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Formulario_Clientes v;
+				try {
+					v = new Formulario_Clientes();
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException | LongitudInvalidaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		
+		JMenuItem MenuOficinas = new JMenuItem("Oficinas");
+		MenuOficinas.setIcon(new ImageIcon(Ventana_Principal.class.getResource("/imagenes/group.png")));
+		mnNewMenu.add(MenuOficinas);
+		MenuOficinas.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -73,15 +117,100 @@ public class Ventana_Principal extends JFrame {
 			}
 		});
 		
-
 		
-		JMenuItem mnNewMenu_3 = new JMenuItem("Empleados");
-		mnNewMenu.add(mnNewMenu_3);
-		mnNewMenu_3.addActionListener(new ActionListener() {
+		
+		
+		JMenuItem MenuVehiculos = new JMenuItem("Vehiculos");
+		MenuVehiculos.setIcon(new ImageIcon(Ventana_Principal.class.getResource("/imagenes/bus.png")));
+		mnNewMenu.add(MenuVehiculos);
+	
+		MenuVehiculos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Formulario_Empleado v;
+				Formulario_Vehiculos v;
 				try {
-					v = new Formulario_Empleado();
+					v = new Formulario_Vehiculos();
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException | LongitudInvalidaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		JMenuItem MenuCategorias = new JMenuItem("Categorias");
+		MenuCategorias.setIcon(new ImageIcon(Ventana_Principal.class.getResource("/imagenes/gear.png")));
+		mnNewMenu.add(MenuCategorias);
+	
+		MenuCategorias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Formulario_Categorias v;
+				try {
+					v = new Formulario_Categorias();
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException | LongitudInvalidaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+
+			}
+		});
+		
+		JMenu mnNewMenu_1 = new JMenu("Procesos Diarios");
+		mnNewMenu_1.setIcon(new ImageIcon(Ventana_Principal.class.getResource("/imagenes/attachment.png")));
+		menuBar.add(mnNewMenu_1);
+		
+		JMenuItem menuAlquileres = new JMenuItem("Alquileres");
+		menuAlquileres.setIcon(new ImageIcon(Ventana_Principal.class.getResource("/imagenes/time_sheet.png")));
+		mnNewMenu_1.add(menuAlquileres);
+		
+		menuAlquileres.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FormularioAlquileres v;
+				try {
+					v = new FormularioAlquileres();
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException | LongitudInvalidaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+
+			}
+		});
+		
+		JMenu mnNewMenu_4 = new JMenu("Listados e Informes");
+		mnNewMenu_4.setIcon(new ImageIcon(Ventana_Principal.class.getResource("/imagenes/clipboard.png")));
+		menuBar.add(mnNewMenu_4);
+		
+		JMenu mnNewMenu_5 = new JMenu("Vehiculos");
+		mnNewMenu_4.add(mnNewMenu_5);
+		
+		JMenuItem menuvehiculosCategoria = new JMenuItem("Por Categorias");
+		mnNewMenu_5.add(menuvehiculosCategoria);
+		menuvehiculosCategoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Listado_vehiculo_categoria v;
+				try {
+					v = new Listado_vehiculo_categoria();
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		JMenuItem menuVehiculoporofi = new JMenuItem("Por Oficinas");
+		mnNewMenu_5.add(menuVehiculoporofi);
+		
+		menuVehiculoporofi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ListadoVehiculoPorOficina v;
+				try {
+					v = new ListadoVehiculoPorOficina();
 					Metodos_Gui.CentraVentana(v);
 					v.setVisible(true);
 				} catch (SQLException e1) {
@@ -91,29 +220,154 @@ public class Ventana_Principal extends JFrame {
 
 			}
 		});
-	
-		JMenu mnNewMenu_1 = new JMenu("Procesos Diarios");
-		menuBar.add(mnNewMenu_1);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Alquileres");
-		mnNewMenu_1.add(mntmNewMenuItem);
+		JMenuItem menuVehiculosdisponibles = new JMenuItem("Disponibles");
+		mnNewMenu_5.add(menuVehiculosdisponibles);
 		
-		JMenu mnNewMenu_4 = new JMenu("Listados e Informes");
-		menuBar.add(mnNewMenu_4);
+		menuVehiculosdisponibles.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Listado_Vehiculos_Activos v;
+				try {
+					v = new Listado_Vehiculos_Activos(RepositorioVehiculos.leeVehiculosBasededatosActivos());
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+
+			}
+		});
 		
-		JMenu mnNewMenu_5 = new JMenu("Vehiculos");
-		mnNewMenu_4.add(mnNewMenu_5);
+		JMenuItem menuVehiculosAlquilados = new JMenuItem("Alquilados");
+		mnNewMenu_5.add(menuVehiculosAlquilados);
 		
-		JMenuItem mntmNewMenuItem_8 = new JMenuItem("Por Categorias");
-		mnNewMenu_5.add(mntmNewMenuItem_8);
+		menuVehiculosAlquilados.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Listado_Vehiculos_Activos v;
+				try {
+					v = new Listado_Vehiculos_Activos(RepositorioVehiculos.leeVehiculosBasededatosAlquilados());
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+
+			}
+		});
 		
-		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Por Oficinas");
-		mnNewMenu_5.add(mntmNewMenuItem_7);
+		JMenu menualquileres = new JMenu("Alquileres");
+		mnNewMenu_4.add(menualquileres);
+		
+		JMenuItem menutodosalquileres = new JMenuItem("Todos los alquileres");
+		menualquileres.add(menutodosalquileres);
+		menutodosalquileres.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Listados_Alquileres v;
+				try {
+					v = new Listados_Alquileres(RepositorioAlquileres.leeAlquileresBasedeDatos(),"Precio");
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (LongitudInvalidaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+
+			}
+		});
+		
+		JMenuItem menualquileresactivos = new JMenuItem("Activos");
+		menualquileres.add(menualquileresactivos);
+		menualquileresactivos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Listados_Alquileres v;
+				try {
+					v = new Listados_Alquileres(RepositorioAlquileres.leeAlquileresBasedeDatosActivos(),"Precio estimado");
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (LongitudInvalidaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+
+			}
+		});
+		
+		JMenuItem menualquileresfinalizados = new JMenuItem("Finalizados");
+		menualquileres.add(menualquileresfinalizados);
+		menualquileresfinalizados.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Listados_Alquileres v;
+				try {
+					v = new Listados_Alquileres(RepositorioAlquileres.leeAlquileresBasedeDatosFinalizados(),"Precio");
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (LongitudInvalidaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+
+			}
+		});
+		
+		JMenu menuEmpleados = new JMenu("Empleados");
+		mnNewMenu_4.add(menuEmpleados);
+		
+		JMenuItem menuEmpledoOficina = new JMenuItem("Oficina");
+		menuEmpleados.add(menuEmpledoOficina);
+		menuEmpledoOficina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Listado_empleado_oficina v;
+				try {
+					v = new Listado_empleado_oficina();
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);				
+
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+				
+		JMenu menuCliente = new JMenu("Clientes");
+		mnNewMenu_4.add(menuCliente);
+		
+		JMenuItem menuclienteprovincia = new JMenuItem("Provincia");
+		menuCliente.add(menuclienteprovincia);
+		menuclienteprovincia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Listado_Cliente v;
+				try {
+					v = new Listado_Cliente();
+					Metodos_Gui.CentraVentana(v);
+					v.setVisible(true);
+				} catch (SQLException | LongitudInvalidaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
+			}
+		});
+		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(228, 5, 32));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
+		
+
 		
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setIcon(new ImageIcon("C:\\Users\\ferku\\OneDrive\\Escritorio\\AVIS.png"));

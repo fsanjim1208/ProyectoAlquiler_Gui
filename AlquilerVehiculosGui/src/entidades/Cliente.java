@@ -19,11 +19,10 @@ public class Cliente extends Persona{
 	 * @param ntarjetacliente String numero de tarjeta del cliente
 	 * @throws LongitudInvalidaException
 	 */
-	public Cliente(String nombre, String ape1, String ape2, String dni,CarnetConducir tipoCarnet, int ntarjetacliente) throws LongitudInvalidaException 
+	public Cliente(String nombre, String ape1, String ape2, String dni,CarnetConducir tipoCarnet) throws LongitudInvalidaException 
 	{
 		super(nombre, ape1, ape2, dni);
 		this.setTipoCarnet(tipoCarnet);
-		this.setNtarjetaCliente(ntarjetacliente);
 	}
 
 	public Cliente(String nombre, String ape1, String dni,CarnetConducir tipoCarnet, int ntarjetacliente) throws LongitudInvalidaException 
@@ -59,6 +58,6 @@ public class Cliente extends Persona{
 	
 	@Override
 	public String toString() {
-		return "Empleado: "+InformacionCompleta();
+		return InformacionCompleta();
 	}
 }

@@ -22,8 +22,9 @@ public abstract class Electrico extends Vehiculo{
 	 * @param tiemporecarga int tiempo que tarda en cargar completamente la bateria del vehiculo
 	 */
 	public Electrico(String matricula, String marca, String modelo, String color, int km,
-			GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria, int autonomia, int tiemporecarga) {
-		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria);
+			GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria, boolean alquilado,
+			int autonomia, int tiemporecarga) {
+		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria, alquilado);
 		this.setAutonomia(tiemporecarga);
 		this.setTiempoRecarga(tiemporecarga);
 	}
@@ -36,10 +37,10 @@ public abstract class Electrico extends Vehiculo{
 	public void setTiempoRecarga(int tiempoRecarga) {
 		this.tiempoRecarga = tiempoRecarga;
 	}
-	private int getAutonimia() {
+	public int getAutonomia() {
 		return autonomia;
 	}
-	private int getTiempoRecarga() {
+	public int getTiempoRecarga() {
 		return tiempoRecarga;
 	}
 	

@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
+import entidades.Empleado;
 import excepciones.LongitudInvalidaException;
 
 public class Repositorio_Localidad_Provincia {
@@ -74,6 +76,20 @@ public class Repositorio_Localidad_Provincia {
 			ListaLocalidad.add(Nombreloc);
 		}
 		return ListaLocalidad;
+	}
+	
+	public static void añadeLocalidad(String nombreloc,String nombreprov) throws SQLException
+	{		
+		PreparedStatement St;
+		ResultSet rs;
+		String query;
+
+		query = "insert into localidad (nombreprov,nombreloc,codloc) values(upper(?),upper(?),207)";
+		St = AccesoADatos.dbconexion.prepareStatement(query); 
+		St.setString(1,nombreloc);
+		St.setString(2,nombreprov);
+		
+		rs = St.executeQuery();
 	}
 	
 	

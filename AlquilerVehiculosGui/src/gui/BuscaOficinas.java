@@ -22,7 +22,7 @@ import entidades.Oficina;
 public class BuscaOficinas extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JList ListaEmpleados;
+	private JList ListaOficinas;
 	private static BuscaEmpleados dialog;
 	private Oficina oficina;
 	
@@ -64,12 +64,12 @@ public class BuscaOficinas extends JDialog {
 			JScrollPane scrollPane = new JScrollPane();
 			contentPanel.add(scrollPane, BorderLayout.CENTER);
 			{
-				ListaEmpleados = new JList();
+				ListaOficinas = new JList();
 				DefaultListModel listModel = new DefaultListModel();
 				listModel.addAll(RepositorioOficina.leeOficinasBasededatos());
-				ListaEmpleados.setModel(listModel);
-				ListaEmpleados.setSelectedIndex(0);
-				scrollPane.setViewportView(ListaEmpleados);
+				ListaOficinas.setModel(listModel);
+				ListaOficinas.setSelectedIndex(0);
+				scrollPane.setViewportView(ListaOficinas);
 			}
 		}
 		{
@@ -82,7 +82,7 @@ public class BuscaOficinas extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						
 						
-						oficina = (Oficina) ListaEmpleados.getSelectedValue();
+						oficina = (Oficina) ListaOficinas.getSelectedValue();
 						
 						
 						

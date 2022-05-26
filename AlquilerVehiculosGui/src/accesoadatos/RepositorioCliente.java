@@ -12,6 +12,12 @@ import excepciones.LongitudInvalidaException;
 
 public class RepositorioCliente {
 
+	/**
+	 * devuele los clientes de la base de datos
+	 * @return ArrayList de clientes
+	 * @throws SQLException
+	 * @throws LongitudInvalidaException
+	 */
 	public static ArrayList<Cliente> leeClientesBasededatos() throws SQLException, LongitudInvalidaException
 	{
 		
@@ -22,7 +28,7 @@ public class RepositorioCliente {
 		
 		ArrayList<Cliente> ListaCliente = new ArrayList<Cliente>();
 		
-		query = "SELECT pe.* FROM clientes cli JOIN personas pe ON cli.dni=pe.dni";
+		query = "SELECT * FROM clientes cli JOIN personas pe ON cli.dni=pe.dni";
 		St = AccesoADatos.dbconexion.prepareStatement(query); 
 		rs = St.executeQuery(query);
 		
@@ -32,26 +38,71 @@ public class RepositorioCliente {
 			String nombre=rs.getString("nombre");
 			String ape1=rs.getString("ap1");
 			String ape2=rs.getString("ap2");
+			String letra=rs.getString("CarnetConducir");
+			CarnetConducir carnet=RepositorioCarnetConducir.BuscaCarnet(letra);
 			
-			Cliente e = new Cliente(nombre, ape1, ape2,dni );
+			Cliente e = new Cliente(nombre, ape1, ape2,dni ,carnet);
 			ListaCliente.add(e);
 		}
 
 		return ListaCliente;
 	}
 	
-	
-	public static Cliente leeCliente(String dni) throws SQLException, LongitudInvalidaException
+	/**
+	 * devuelve todos los clientes que tiene un determinado carnet
+	 * @param carnet CarnetCondcuir
+	 * @return ArrayList de clientes 
+	 * @throws SQLException
+	 * @throws LongitudInvalidaException
+	 */
+	public static ArrayList<Cliente> leeClientesporCarnet(CarnetConducir carnet) throws SQLException, LongitudInvalidaException
 	{
 		
 		PreparedStatement St;
 		ResultSet rs;
 		String query;
 		
-		query = "SELECT * FROM cliente WHERE dni = ?";
+		
+		ArrayList<Cliente> ListaCliente = new ArrayList<Cliente>();
+		
+		query = "SELECT * FROM clientes cli JOIN personas pe ON cli.dni=pe.dni where cli.carnetconducir=?";
+		St = AccesoADatos.dbconexion.prepareStatement(query); 
+		St.setString(1, carnet.getLetra());
+		rs = St.executeQuery();
+		
+		while (rs.next()) 
+		{
+			String dni=rs.getString("dni");
+			String nombre=rs.getString("nombre");
+			String ape1=rs.getString("ap1");
+			String ape2=rs.getString("ap2");
+			String letra=rs.getString("CarnetConducir");
+			
+			Cliente e = new Cliente(nombre, ape1, ape2,dni ,carnet);
+			ListaCliente.add(e);
+		}
+
+		return ListaCliente;
+	}
+	
+	/**
+	 * busca un cliente a partir de un dni
+	 * @param dni
+	 * @return cliente
+	 * @throws SQLException
+	 * @throws LongitudInvalidaException
+	 */
+	public static Cliente BuscaCliente(String dni) throws SQLException, LongitudInvalidaException
+	{
+		
+		PreparedStatement St;
+		ResultSet rs;
+		String query;
+		
+		query = "SELECT * FROM clientes cli JOIN personas pe ON cli.dni=pe.dni where pe.dni=?";
 		St = AccesoADatos.dbconexion.prepareStatement(query); 
 		St.setString(1,dni);
-		rs = St.executeQuery(query);
+		rs = St.executeQuery();
 				
 		Cliente cliente = null;
 
@@ -59,8 +110,8 @@ public class RepositorioCliente {
 		while (rs.next()) 
 		{
 			String nombre=rs.getString("nombre");
-			String ape1=rs.getString("ape1");
-			String ape2=rs.getString("ape2");
+			String ape1=rs.getString("ap1");
+			String ape2=rs.getString("ap2");
 			
 			cliente = new Cliente(nombre,ape1, ape2, dni);
 		}
@@ -68,32 +119,62 @@ public class RepositorioCliente {
 		return cliente;
 	}
 	
-	public static void añadeCliente(String nombre, String ape1, String ape2, String dni, CarnetConducir tipoCarnet) throws SQLException
+	/**
+	 * Metodo que añade un cliente a la base de datos
+	 * @param nombre
+	 * @param ape1
+	 * @param ape2
+	 * @param dni
+	 * @param tipoCarnet
+	 * @throws SQLException
+	 * @throws LongitudInvalidaException
+	 */
+	public static void añadeCliente(String nombre, String ape1, String ape2, String dni, CarnetConducir tipoCarnet) throws SQLException, LongitudInvalidaException
 	{
 		
 		PreparedStatement St;
 		ResultSet rs;
 		String query;
 		
-		query = "Insert * insert into persona (dni,nombre,ap1,ap2) values (?,?,?,?);";
-		St = AccesoADatos.dbconexion.prepareStatement(query); 
-		St.setString(1,nombre);
-		St.setString(2,ape1);
-		St.setString(4,ape2);
-		St.setString(5,dni);
 		
-		rs = St.executeQuery(query);
-		rs=null;
+		if (RepositorioEmpleados.BuscaEmpleados(dni)!=null)
+		{
+
+			query = "Insert into clientes (dni,CarnetConducir) values (?,?)";
+			St = AccesoADatos.dbconexion.prepareStatement(query); 
+			St.setString(1,dni);
+			St.setString(2,tipoCarnet.getLetra());
+			
+			rs = St.executeQuery();
+		}
+		else
+		{
+			query = "Insert into personas (dni,nombre,ap1,ap2) values (?,?,?,?)";
+			St = AccesoADatos.dbconexion.prepareStatement(query); 
+			St.setString(2,nombre);
+			St.setString(3,ape1);
+			St.setString(4,ape2);
+			St.setString(1,dni);
 		
-		query = "Insert * insert into clientes (dni,CarnetConducir) values (?,?);";
-		St = AccesoADatos.dbconexion.prepareStatement(query); 
-		St.setString(1,dni);
-		St.setString(2,tipoCarnet.getLetra());
-		
-		rs = St.executeQuery(query);
+			rs = St.executeQuery();
+			rs=null;
+			
+			query = "Insert into clientes (dni,CarnetConducir) values (?,?)";
+			St = AccesoADatos.dbconexion.prepareStatement(query); 
+			St.setString(1,dni);
+			St.setString(2,tipoCarnet.getLetra());
+			
+			rs = St.executeQuery();
+		}
 	}
 	
-	public static void añadeCliente(Cliente cliente) throws SQLException
+	/**
+	 * Metodo que añade un cliente a la base de datos
+	 * @param cliente
+	 * @throws SQLException
+	 * @throws LongitudInvalidaException
+	 */
+	public static void añadeCliente(Cliente cliente) throws SQLException, LongitudInvalidaException
 	{
 		
 		PreparedStatement St;
@@ -106,47 +187,54 @@ public class RepositorioCliente {
 		String dni=cliente.getDni();
 		CarnetConducir tipoCarnet=cliente.getTipoCarnet();
 		
-		query = "Insert * insert into persona (dni,nombre,ap1,ap2) values (?,?,?,?);";
-		St = AccesoADatos.dbconexion.prepareStatement(query); 
-		St.setString(1,nombre);
-		St.setString(2,ape1);
-		St.setString(4,ape2);
-		St.setString(5,dni);
-		
-		rs = St.executeQuery(query);
-		rs=null;
-		
-		query = "Insert * insert into clientes (dni,CarnetConducir) values (?,?);";
-		St = AccesoADatos.dbconexion.prepareStatement(query); 
-		St.setString(1,dni);
-		St.setString(2,tipoCarnet.getLetra());
-		
-		rs = St.executeQuery(query);
+		añadeCliente(nombre, ape1, ape2, dni, tipoCarnet);
 
 	}
 	
-	public static void eliminaCliente(String dni) throws SQLException
+	/**
+	 * Metodo que elimina un cliente a la base de datos
+	 * @param dni
+	 * @throws SQLException
+	 * @throws LongitudInvalidaException
+	 */
+	public static void eliminaCliente(String dni) throws SQLException, LongitudInvalidaException
 	{
 		
 		PreparedStatement St;
 		ResultSet rs;
 		String query;
 		
-		query = "DELETE FROM cliente where dni = ? ;";
-		St = AccesoADatos.dbconexion.prepareStatement(query); 
-		St.setString(1,dni);
-
-		rs = St.executeQuery(query);
-		rs=null;
 		
-		query = "DELETE FROM personas where dni = ? ;";
-		St = AccesoADatos.dbconexion.prepareStatement(query); 
-		St.setString(1,dni);
-
-		rs = St.executeQuery(query);
-	}
-	
-	public static void eliminaCliente(Cliente cliente) throws SQLException
+		if (RepositorioEmpleados.BuscaEmpleados(dni)!=null)
+		{
+			query = "DELETE FROM clientes where dni = ?";
+			St = AccesoADatos.dbconexion.prepareStatement(query); 
+			St.setString(1,dni);
+			rs = St.executeQuery();
+		}
+		else
+		{
+			query = "DELETE FROM clientes where dni = ?";
+			St = AccesoADatos.dbconexion.prepareStatement(query); 
+			St.setString(1,dni);
+			rs = St.executeQuery();
+			
+			rs=null;
+			
+			query = "DELETE FROM personas where dni = ?";
+			St = AccesoADatos.dbconexion.prepareStatement(query); 
+			St.setString(1,dni);
+			rs = St.executeQuery();
+		}
+		}
+			
+	/**
+	 * Metodo que elimina un cliente a la base de datos
+	 * @param cliente
+	 * @throws SQLException
+	 * @throws LongitudInvalidaException
+	 */
+	public static void eliminaCliente(Cliente cliente) throws SQLException, LongitudInvalidaException
 	{
 
 		PreparedStatement St;
@@ -155,24 +243,37 @@ public class RepositorioCliente {
 		
 		String dni=cliente.getDni();
 		
-		query = "DELETE FROM cliente where dni = ? ;";
-		St = AccesoADatos.dbconexion.prepareStatement(query); 
-		St.setString(1,dni);
-
-		rs = St.executeQuery(query);
-		rs=null;
-		
-		query = "DELETE FROM personas where dni = ? ;";
-		St = AccesoADatos.dbconexion.prepareStatement(query); 
-		St.setString(1,dni);
-
-		rs = St.executeQuery(query);
+		eliminaCliente(dni);
 	}
-	
-	
-	public static void modificaCliente(Cliente clienteviejo, Cliente clientenuevo ) throws SQLException
+		
+	/**
+	 * Metodo que modifica un cliente a la base de datos
+	 * @param cliente
+	 * @throws SQLException
+	 * @throws LongitudInvalidaException
+	 */
+	public static void modificaCliente(Cliente cliente ) throws SQLException, LongitudInvalidaException
 	{
-		eliminaCliente(clienteviejo);
-		añadeCliente(clientenuevo);
+		PreparedStatement St;
+		ResultSet rs;
+		String query;
+		query = "UPDATE clientes set carnetconducir=? where dni = ?";
+		
+		
+		St = AccesoADatos.dbconexion.prepareStatement(query); 
+		St.setString(1,cliente.getTipoCarnet().getLetra());
+		St.setString(2,cliente.getDni());
+		rs = St.executeQuery();
+		
+		St=null;
+		rs=null;
+		query="UPDATE personas set nombre=?,ap1=?,ap2=? where dni = ?";
+		
+		St = AccesoADatos.dbconexion.prepareStatement(query); 
+		St.setString(1,cliente.getNombre());
+		St.setString(2,cliente.getApe1());
+		St.setString(3,cliente.getApe2());
+		St.setString(4,cliente.getDni());
+		rs = St.executeQuery();
 	}
 }

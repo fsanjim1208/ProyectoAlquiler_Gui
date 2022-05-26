@@ -9,6 +9,9 @@ public class AccesoADatos {
 	
 	public static Connection dbconexion;
 
+	/**
+	 * metodo que abre la conexion para la bade datos
+	 */
 	public static void AbreConexion()
 	{
 		Connection conexion = null;

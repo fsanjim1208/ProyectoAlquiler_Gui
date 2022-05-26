@@ -28,9 +28,10 @@ public abstract class Combustion extends Vehiculo {
 	 * @param nivelemisiones int nivel de emision que emite el vehiculo
 	 */
 	public Combustion(String matricula, String marca, String modelo, String color, int km,
-			GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria,String nivelemisiones) 
+			GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria, boolean alquilado,
+			String consumo,int potencia,String nivelemisiones) 
 	{
-		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria);
+		super(matricula, marca, modelo, color, km, fechaadquisicion, oficina, categoria, alquilado);
 		this.setConsumo(consumo);
 		this.setPotencia(potencia);
 		this.setNivelEmisiones(nivelemisiones);

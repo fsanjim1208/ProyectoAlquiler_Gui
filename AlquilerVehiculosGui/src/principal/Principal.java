@@ -20,13 +20,10 @@ public class Principal {
 		AccesoADatos.AbreConexion();
 		
 		Ventana_Principal frame = new Ventana_Principal();
+		gui.Metodos_Gui.Tamañomaximo(frame);
 		gui.Metodos_Gui.CentraVentana(frame);
 		frame.setVisible(true);
 
-//		
-//		BuscaEmpleados frame = new BuscaEmpleados();
-//		gui.Metodos_Gui.CentraVentana(frame);
-//		frame.setVisible(true);
 		
 	}
 

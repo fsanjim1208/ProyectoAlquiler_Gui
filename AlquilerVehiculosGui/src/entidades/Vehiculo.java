@@ -16,6 +16,9 @@ public abstract class Vehiculo implements Comparable <Vehiculo> {
 		private GregorianCalendar fechaadquisicion;
 		private Oficina oficina;
 		private Categoria categoria;
+		private boolean alquilado;
+
+		
 
 		//Constructores
 		/**
@@ -29,7 +32,7 @@ public abstract class Vehiculo implements Comparable <Vehiculo> {
 		 * @param oficina Oficina Oficina en la que se encuentra el vehiculo
 		 * @param categoria Categoria Categoria a la que pertence el vehiculo
 		 */
-		public Vehiculo(String matricula, String marca, String modelo, String color,int km,GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria) {
+		public Vehiculo(String matricula, String marca, String modelo, String color,int km,GregorianCalendar fechaadquisicion, Oficina oficina, Categoria categoria, boolean alquilado) {
 			this.setMatricula(matricula);
 			this.setMarca(marca);
 			this.setModelo(modelo);
@@ -38,6 +41,7 @@ public abstract class Vehiculo implements Comparable <Vehiculo> {
 			this.setFechaadquisicion(fechaadquisicion);
 			this.setOficina(oficina);
 			this.setCategoria(categoria);
+			this.setAlquilado(alquilado);
 		}
 		
 		public Vehiculo(Vehiculo a)
@@ -133,11 +137,19 @@ public abstract class Vehiculo implements Comparable <Vehiculo> {
 			this.categoria = categoria;
 		}
 		
+		public boolean isAlquilado() {
+			return alquilado;
+		}
+
+		public void setAlquilado(boolean alquilado) {
+			this.alquilado = alquilado;
+		}
+		
 		
 		//metodos
 		public String InformacionVehiculo()
 		{
-			return this.marca+" "+modelo+" de color "+this.color+" con matricula "+this.matricula+" y su categoria es "+this.categoria + " esta en "+this.oficina;
+			return this.marca+" "+modelo+" de color "+this.color+" con matricula "+this.matricula;//+" y su categoria es "+this.categoria + " esta en "+this.oficina;
 		}
 		
 		@Override

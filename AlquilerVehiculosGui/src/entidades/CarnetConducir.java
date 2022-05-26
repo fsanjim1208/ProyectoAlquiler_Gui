@@ -38,5 +38,40 @@ public class CarnetConducir {
 	{
 		Descripcion = descripcion;
 	}
+	
+	@Override
+	public String toString() {
+		return letra+" - "+Descripcion;
+	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		CarnetConducir guest = (CarnetConducir) obj;
+	
+		return 	(this.letra.equals(guest.letra));
+	}
+	
+
+	public int compareTo(CarnetConducir o) 
+	{
+		int resultado=0;
+		
+		if ( this.getLetra().compareTo(o.getLetra())<0 )
+		{
+			resultado=-1;
+		}
+		else if (this.getLetra().compareTo(o.getLetra())>0 ) 
+		{
+			resultado = 1;
+		}
+		else
+		{
+			resultado = 0;
+		}
+		
+		return resultado;
+	}
+
+	
 }

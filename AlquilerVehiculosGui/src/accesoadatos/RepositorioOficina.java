@@ -10,7 +10,11 @@ import entidades.Oficina;
 
 public class RepositorioOficina {
 
-	
+	/**
+	 * lee oficina de la base de datos
+	 * @return ArrayList de oficinas
+	 * @throws SQLException
+	 */
 	public static ArrayList<Oficina> leeOficinasBasededatos() throws SQLException
 	{
 		
@@ -40,12 +44,19 @@ public class RepositorioOficina {
 		return ListaOficina;
 	}
 	
+	/**
+	 * Busca una oficina a partir de su codigo
+	 * @param codigoOficina String del codigo de la oficina
+	 * @return devuelve una oficina a la que pertenece el codigo
+	 * @throws SQLException
+	 */
 	public static Oficina BuscaOficina(String codigoOficina) throws SQLException
 	{
 		
 		PreparedStatement St;
 		ResultSet rs;
 		String query;
+		codigoOficina=codigoOficina.toUpperCase();
 		
 		query = "SELECT * FROM oficina WHERE codigo = ?";
 		St = AccesoADatos.dbconexion.prepareStatement(query); 
@@ -69,6 +80,15 @@ public class RepositorioOficina {
 		return o;
 	}
 	
+	/**
+	 * Metodo que añade una oficina a la base de datos
+	 * @param codigo
+	 * @param descripcion
+	 * @param oficinaaeropuerto
+	 * @param nombreloc
+	 * @param nombreprov
+	 * @throws SQLException
+	 */
 	public static void añadeOficina(String codigo, String descripcion, boolean oficinaaeropuerto,String nombreloc, String nombreprov) throws SQLException
 	{
 		
@@ -87,6 +107,11 @@ public class RepositorioOficina {
 		rs = St.executeQuery();
 	}
 	
+	/**
+	 * Metodo que añade una oficina a la base de datos
+	 * @param o Oficina que añade
+	 * @throws SQLException
+	 */
 	public static void añadeOficina(Oficina o) throws SQLException
 	{
 		
@@ -111,6 +136,11 @@ public class RepositorioOficina {
 		rs = St.executeQuery(query);
 	}
 	
+	/**
+	 * Metodo que elimina una oficina de la base de datos
+	 * @param codigo
+	 * @throws SQLException
+	 */
 	public static void eliminaOficina(String codigo) throws SQLException
 	{
 		
@@ -118,13 +148,18 @@ public class RepositorioOficina {
 		ResultSet rs;
 		String query;
 		
-		query = "DELETE FROM oficina where codigo = ? ;";
+		query = "DELETE FROM oficina where codigo = ?";
 		St = AccesoADatos.dbconexion.prepareStatement(query); 
 		St.setString(1,codigo);
 
-		rs = St.executeQuery(query);
+		rs = St.executeQuery();
 	}
 	
+	/**
+	 * Metodo que elimina una oficina de la base de datos
+	 * @param o
+	 * @throws SQLException
+	 */
 	public static void eliminaOficina(Oficina o) throws SQLException
 	{
 		
@@ -134,18 +169,22 @@ public class RepositorioOficina {
 		
 		String codigo=o.getCodigo();
 		
-		query = "DELETE FROM oficina where codigo = ? ;";
+		query = "DELETE FROM oficina where codigo = ?";
 		St = AccesoADatos.dbconexion.prepareStatement(query); 
 		St.setString(1,codigo);
 
-		rs = St.executeQuery(query);
+		rs = St.executeQuery();
 	}
 	
-	
+	/**
+	 * Metodo que modifica una oficina de la base de datos
+	 * @param codigo
+	 * @throws SQLException
+	 */
 	public static void modificaOficina(Oficina oficinavieja, Oficina oficinanueva) throws SQLException
 	{
 		eliminaOficina(oficinavieja);
 		añadeOficina(oficinanueva);
 	}
-		//meter aqui todos los metodos para interactuar con la base de datos 
+		
 }

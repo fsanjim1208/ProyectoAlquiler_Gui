@@ -56,10 +56,18 @@ public class Categoria {
 
 	@Override
 	public String toString() {
-		return "Categoria " + Descripcion + " con codigo -"+Codigo + "- con un recargo del " + recargo + "%";
+	//	return "Categoria " + Descripcion + " con codigo -"+Codigo + "- con un recargo del " + recargo + "%";
+		return "Categoria " + Descripcion+ " - " + Codigo;
 	}
 	
 	
-
+	@Override
+	public boolean equals(Object obj)
+	{
+		Categoria guest = (Categoria) obj;
+	
+		return 	(this.Codigo.equals(guest.Codigo));
+	}
+	
 
 }

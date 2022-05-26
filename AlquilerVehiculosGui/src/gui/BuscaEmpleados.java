@@ -75,11 +75,8 @@ public class BuscaEmpleados extends JDialog {
 						
 						
 						empleado = (Empleado) ListaEmpleados.getSelectedValue();
-						
-						
-						
 						setVisible(false);
-		
+						
 					}
 					
 				});
